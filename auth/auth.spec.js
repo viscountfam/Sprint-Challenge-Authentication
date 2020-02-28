@@ -7,9 +7,8 @@ describe('GET/ without a token', () => {
     it('should give you a 401 error', () => {
         return request(server).get('/api/jokes')
         .expect(401)
-        .expect('Content-Type', JSON)
         .then( res => {
-            expect(res.body.err).toBe('shall not pass!')
+            expect(res.body).toStrictEqual({"you": 'shall not pass!'})
         })
     })
 })
@@ -20,7 +19,7 @@ describe('testing the add function on the database', () => {
     });
 
     describe('add function', () => {
-        it('add new users into the db', () => {
+        it('add new users into the db', async () => {
             let userNumber;
             userNumber = await db('users')
             expect(userNumber).toHaveLength(0)
@@ -32,4 +31,38 @@ describe('testing the add function on the database', () => {
         });
     });
 });
+
+describe('register', function() {
+    it('has the ability to register a new user', function() {
+        request(server)
+        .post('/api/auth/register')
+        .send({ username: 'Albus', password: 'dumbledore'})
+        .expect(201)
+        .then( res => {
+            expect(res.type).toMatch(/json/)
+            expect(res.body).toHaveProperty('password')
+            expect(res.body).objectContaining("Albus")
+        });
+    });
+});
+    
+
+
+
+describe('login', function() {
+    it('has the ability to login with a premade account', function() {
+        request(server)
+        .post('/api/auth/login')
+        .send({ username: 'Harry', password: 'potter'})
+        .expect(200)
+        .then( res => {
+            expect(res.type).toMatch(/json/)
+            expect(res.body).objectContaining("Welcome Harry!")
+        });
+    });
+
+
+});
+
+
 
