@@ -34,35 +34,76 @@ describe('testing the add function on the database', () => {
 
 describe('register', function() {
     it('has the ability to register a new user', function() {
-        request(server)
+        return request(server)
         .post('/api/auth/register')
         .send({ username: 'Albus', password: 'dumbledore'})
         .expect(201)
         .then( res => {
             expect(res.type).toMatch(/json/)
+            expect(res.body).toHaveProperty('id')
+            expect(res.body).toHaveProperty('username')
             expect(res.body).toHaveProperty('password')
-            expect(res.body).objectContaining("Albus")
         });
     });
 });
     
+// describe('new login', function() {
+//     let token;
+//     it('has the ability to login with a recently made account', function() {
+//         return request(server)
+//         .post('/api/auth/login')
+//         .send({ username: 'Albus', password: 'dumbledore'})
+//         .expect(200)
+//         .then( res => {
+//             expect(res.type).toMatch(/json/)
+//         });
+//     });
+
+//     it('can access jokes with a token', function() {
+//         return request(server)
+//         .get('/api/jokes')
+//         .send(token)
+//         .expect(200)
+//         .then( response => {
+//             expect(response.type).objectContaining(/json/)
+//             expect(Array.isArray(response.body)).toBe(true)
+//             expect(response.body).toHaveLength(20)
+//         })
+//     })
+
+// });
 
 
 
-describe('login', function() {
-    it('has the ability to login with a premade account', function() {
-        request(server)
-        .post('/api/auth/login')
-        .send({ username: 'Harry', password: 'potter'})
-        .expect(200)
-        .then( res => {
-            expect(res.type).toMatch(/json/)
-            expect(res.body).objectContaining("Welcome Harry!")
-        });
-    });
+// describe('pre-existing login', function() {
+//     let token;
+//     it('has the ability to login with a pre-made account', function() {
+//         return request(server)
+//         .post('/api/auth/login')
+//         .send({ username: 'Harry', password: 'potter'})
+//         .expect(200)
+//         .then( res => {
+//             expect(res.type).toMatch(/json/)
+//         });
+//     });
+
+//     it('can access jokes with a token', function() {
+//         return request(server)
+//         .get('/api/jokes')
+//         .send(token)
+//         .expect(200)
+//         .then( response => {
+//             expect(response.type).toMatch(/json/)
+//             expect(Array.isArray(response.body)).toBe(true)
+//             expect(response.body).toHaveLength(20)
+//         })
+//     })
+
+// });
 
 
-});
+
+
 
 
 
